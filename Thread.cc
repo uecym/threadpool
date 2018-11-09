@@ -8,7 +8,7 @@
 //
 
 #include "./Thread.h"
-
+#include "Log.h"
 
 namespace ndsl{
 
@@ -17,12 +17,12 @@ namespace utils{
 // 创建线程
 bool Thread::create()
 { 
-    ret_ = pthread_create(&tid, NULL, run, NULL;
+    ret_ = pthread_create(&tid_, NULL, run,this);
     return ret_== 1;
 }
 
 // 线程运行函数
-void Thread::run()
+ void* Thread::run(void *p)
 {
    while(running_)
     {
@@ -30,22 +30,25 @@ void Thread::run()
         {
             continue;
         }
-        thrFunc_(thrPrama_);
-        flag_ = 0;
-        backFlag_ =1;
+        
+        Thread *pthis = (Thread *)p;
+        pthis->thrRet_ = pthis->thrFunc_(pthis->thrPrama_);
+    
+        return pthis->thrRet_;
     }
-}
 
+   
+}
 
 int Thread::join()
 {  
-    return pthread_join(tid, retval);
+    return pthread_join(tid_, retval);
 }
 
 
 void Thread::wrapper(Func func,void *prama)
 {
-    thrFunc_= func
+    thrFunc_= func;
     thrPrama_  = prama;
     flag_=1;
 }
