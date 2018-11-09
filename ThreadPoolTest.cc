@@ -35,16 +35,6 @@ TEST_CASE("ThreadPool", "[thread]")
         REQUIRE(threadpool.size()=5);
     }
 
-    SECTION("giveBackThread")
-    {   
-        Thread *thread = threadpool.getThread(add,NULL);
-        int n = threadpool.giveBackThread(thread);
-
-        REQUIRE(n=1);
-        REQUIRE(threadpool.size()=6);
-
-    }
-
     SECTION("join")
     {
         threadpool.join();
