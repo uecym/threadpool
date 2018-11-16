@@ -17,28 +17,32 @@
 #include "Thread.h"
 #include "ThreadPool.h"
 
-void add()
+void *add(void *)
 {
     int c;
     c = 4+5;
+    return (void *)1;
 }
-
-TEST_CASE("ThreadPool", "[thread]")
-{   
-  
-    ThreadPool threadpool(6);
-    
-    threadpool.create(); 
-    SECTION("getThread")
+using namespace ndsl::utils;
+TEST_CASE("test")
+{    
+    SECTION("thread")
     {
-        Thread *thread = threadpool.getThread(add,NULL);      
-        REQUIRE(threadpool.size()=5);
+      Thread thread;
+     bool ret= thread.create();
+      REQUIRE(ret == true);
+
     }
 
-    SECTION("join")
+    SECTION("threadpool")
     {
+        ThreadPool threadpool(6);
+        threadpool.create(); 
+        threadpool.getThread(add,NULL);      
+        REQUIRE(threadpool.size()==5);
+
         threadpool.join();
-        REQUIRE(threadpool.size()= 0 );
+        REQUIRE(threadpool.size()== 0 );
     }
 
 

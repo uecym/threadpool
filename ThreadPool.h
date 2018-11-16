@@ -23,7 +23,7 @@ namespace utils
 class ThreadPool
 {
   public:
-    using Func = void(*)(void *);
+    using Func = void*(*)(void *);
     bool ret_;
     int running_;
     int flag_;
@@ -46,8 +46,8 @@ class ThreadPool
     void clean(); // 线程队列清理
     size_t size();
 
- private:
   void join(); // 线程池清理
+
  };
 
 

@@ -14,30 +14,39 @@ namespace ndsl{
 
 namespace utils{
 
+Thread::Thread()
+        : 
+         ret_(0),
+         running_(true),
+         flag_(0),
+         retval(NULL),
+         thrFunc_(NULL),
+         thrPrama_(NULL),
+         thrRet_(NULL),
+         tid_(0)
+        {}
+Thread::~Thread(){}
 // 创建线程
 bool Thread::create()
 { 
-    ret_ = pthread_create(&tid_, NULL, run,this);
-    return ret_== 1;
+    ret_ = pthread_create(&tid_,NULL,&Thread::run,(void *)this);
+    return ret_== true;
 }
 
 // 线程运行函数
- void* Thread::run(void *p)
+ void * Thread::run(void *p)
 {
-   while(running_)
+   Thread * thread = (Thread *)(p);
+   while(thread->running_)
     {
-        if(!flag_)
+        if(!thread->flag_)
         {
             continue;
-        }
-        
-        Thread *pthis = (Thread *)p;
-        pthis->thrRet_ = pthis->thrFunc_(pthis->thrPrama_);
+        }   
+        thread->thrRet_=thread->thrFunc_(thread->thrPrama_);
     
-        return pthis->thrRet_;
-    }
-
-   
+        return thread->thrRet_;
+    }   
 }
 
 int Thread::join()

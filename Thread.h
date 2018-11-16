@@ -23,38 +23,25 @@ class Thread
 {
   public:
     
-    using Func = void(*)(void*);
+    using Func = void* (*)(void*);
+
+  private:
     Func thrFunc_;
     void *thrPrama_;
 
-    int ret_;
+    bool ret_;
     int flag_;
     bool running_;
     void **retval;
-    int backFlag_;
     void *thrRet_; 
-  private:
     pthread_t tid_;
 
   public:
-    Thread()
-    : 
-      ret_(0),
-      running_(true),
-      flag_(0),
-      retval(NULL),
-      thrFunc_(NULL),
-      thrPrama_(NULL),
-      thrRet_(NULL),
-      tid_(0)
-    {};
-    
-    ~Thread(){};
     bool create(); // 线程的创建
     void wrapper(Func func,void *prama); // 把函数和参数打包进来
     int join();
   private:
-    void* run(void *); // 线程运行函数
+    static void* run(void *); // 线程运行函数
 
 };
 
