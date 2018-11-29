@@ -23,7 +23,7 @@ class Thread
 {
   public:
     
-    using Func = void* (*)(void*);
+using Func = void* (*)(void*);
 
   private:
     Func thrFunc_;

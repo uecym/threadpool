@@ -41,8 +41,7 @@ class ThreadPool
     ~ThreadPool();
 
     void create(); // 创建线程池
-    Thread *getThread(Func func,void *prama); // 取线程
-//    int    giveBackThread(Thread *thread); // 放线程回池
+    void getThread(Func func,void *prama); // 取线程
     void clean(); // 线程队列清理
     size_t size();
 

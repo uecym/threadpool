@@ -29,7 +29,11 @@ ThreadPool::ThreadPool(int threadNum)
      s_fault(0),
      ret_(0),
      mutex_(NULL)
-    {}
+    {
+        
+    threadNum_ = threadNum;
+
+    }
 
  ThreadPool::~ThreadPool(){}
 
@@ -62,7 +66,7 @@ void ThreadPool::create()
      
 }
 
-Thread *ThreadPool::getThread(Func func,void *prama)
+void ThreadPool::getThread(Func func,void *prama)
 {
     if(!threadPool_.empty())
     {
@@ -72,21 +76,10 @@ Thread *ThreadPool::getThread(Func func,void *prama)
         
         thread->wrapper(func,prama);  // 设置任务
         pthread_mutex_unlock(mutex_); //线程池开锁
-         return thread;
+        
     }
 }
 
-//int  ThreadPool::giveBackThread(Thread *thread)
-//{
-//    if(thread->backFlag_ !=1)
-//        return s_fault;
-//
-//    pthread_mutex_lock(mutex_);
-//    threadPool_.push_back(thread);
-//    thread->backFlag_ = 0;
-//    pthread_mutex_unlock(mutex_);
-//    return s_ok;
-//}
 
 void ThreadPool::join()
     {
